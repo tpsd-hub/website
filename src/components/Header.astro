@@ -1,0 +1,59 @@
+---
+const links = [
+  { href: '#what-we-do', label: 'What We Do' },
+  { href: '#beyond-the-build', label: 'Beyond the Build' },
+  { href: '#process', label: 'Process' },
+  { href: '#who-we-are', label: 'Who We Are' },
+];
+---
+
+<header id="site-header" class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-transparent transition-colors duration-300">
+  <div class="max-w-6xl mx-auto px-5 sm:px-6 h-16 flex items-center justify-between">
+    <a href="#top" class="flex items-center gap-2.5">
+      <img src="/images/7a479df6e68f0eabf2b4b4f904abea4c.jpg" alt="The Public Service Desk logo" class="w-8 h-8 rounded-md object-contain" />
+      <span class="font-bold tracking-tight text-ink">The Public Service Desk</span>
+    </a>
+
+    <nav class="hidden md:flex items-center gap-1" aria-label="Main">
+      {links.map((l) => (
+        <a href={l.href} class="px-3 py-2 rounded-md text-sm text-subtle hover:text-ink hover:bg-wash transition-colors">{l.label}</a>
+      ))}
+      <a href="#contact" class="ml-3 inline-flex items-center gap-1.5 rounded-lg bg-navy hover:bg-navy-dark text-white text-sm font-semibold px-4 py-2 transition-colors">
+        Contact Us
+      </a>
+    </nav>
+
+    <button id="menu-toggle" class="md:hidden p-2 -mr-2 text-ink" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobile-menu">
+      <svg data-open width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16" /></svg>
+      <svg data-close hidden width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18" /></svg>
+    </button>
+  </div>
+
+  <nav id="mobile-menu" hidden class="md:hidden border-t border-line bg-white px-5 py-4" aria-label="Mobile">
+    <div class="flex flex-col gap-1">
+      {links.map((l) => (
+        <a href={l.href} class="py-2.5 text-ink font-medium">{l.label}</a>
+      ))}
+      <a href="#contact" class="mt-2 text-center rounded-lg bg-navy text-white font-semibold py-3">Contact Us</a>
+    </div>
+  </nav>
+</header>
+
+<script>
+  const header = document.getElementById('site-header')!;
+  const toggle = document.getElementById('menu-toggle')!;
+  const menu = document.getElementById('mobile-menu')!;
+
+  const onScroll = () => header.classList.toggle('border-line', window.scrollY > 8);
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  const setOpen = (open: boolean) => {
+    menu.hidden = !open;
+    toggle.setAttribute('aria-expanded', String(open));
+    toggle.querySelector('[data-open]')!.toggleAttribute('hidden', open);
+    toggle.querySelector('[data-close]')!.toggleAttribute('hidden', !open);
+  };
+  toggle.addEventListener('click', () => setOpen(menu.hidden));
+  menu.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setOpen(false)));
+</script>

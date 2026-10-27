@@ -1,0 +1,10 @@
+---
+// Hand-drawn underline that sits under a highlighted word.
+---
+
+<span class="relative inline-block whitespace-nowrap">
+  <slot />
+  <svg class="squiggle absolute left-0 -bottom-2 w-full h-3 text-teal" viewBox="0 0 200 12" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M2 8c12-6 20 4 32-1s19-5 30 0 20 5 32 0 20-6 32-1 19 6 32 1 21-5 36-2" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" />
+  </svg>
+</span>

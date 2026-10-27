@@ -1,0 +1,53 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/favicon.ico" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <script is:inline>document.documentElement.classList.add('js');</script>
+  </head>
+  <body class="min-h-screen flex flex-col">
+    <Header />
+    <main class="flex-1 overflow-x-clip">
+      <slot />
+    </main>
+    <Footer />
+    <script>
+      // Fade sections in as they enter the viewport; siblings stagger.
+      const els = document.querySelectorAll<HTMLElement>('[data-reveal]');
+      els.forEach((el) => {
+        const sibs = Array.from(el.parentElement?.children ?? []).filter((c) => c.hasAttribute('data-reveal'));
+        const i = sibs.indexOf(el);
+        if (i > 0) el.style.setProperty('--d', `${Math.min(i, 5) * 0.08}s`);
+      });
+      const io = new IntersectionObserver(
+        (entries) =>
+          entries.forEach((e) => {
+            if (e.isIntersecting) {
+              e.target.classList.add('is-in');
+              io.unobserve(e.target);
+            }
+          }),
+        { rootMargin: '0px 0px -60px 0px' },
+      );
+      els.forEach((el) => io.observe(el));
+    </script>
+  </body>
+</html>
